@@ -7,7 +7,7 @@ import co.vasic.rest.HttpResponse;
 import co.vasic.rest.HttpResponseInterface;
 import co.vasic.rest.HttpServlet;
 import co.vasic.user.User;
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,12 +76,17 @@ public class DeckServlet extends HttpServlet {
 
         System.out.println(request.getBody());
 
-        System.out.println(gson.fromJson(request.getBody(), Map.class));
-
         //int[] ids = gson.fromJson(request.getBody(), int[].class);
         //String[] ids = gson.fromJson(request.getBody(), String[].class);
 
-        String[] ids = gson.fromJson(request.getBody(), String[].class);
+        //String[] ids = gson.fromJson(request.getBody(), String[].class);
+
+        JsonObject jsonObject = JsonParser.parseString(request.getBody()).getAsJsonObject();
+        JsonArray jsonArray = jsonObject.getAsJsonArray("cards");
+        String[] ids = new String[jsonArray.size()];
+        for (int i = 0; i < jsonArray.size(); i++) {
+            ids[i] = jsonArray.get(i).getAsString();
+        }
 
         System.out.println(ids);
 
