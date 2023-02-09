@@ -42,7 +42,7 @@ public class CardServiceTest {
             // arrange
             Connection conn = DatabaseService.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5, 'WATER', 'MONSTER')");
+            sm.executeUpdate("INSERT INTO cards(id, hashId, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5, 'WATER', 'MONSTER')");
 
             // act
             MonsterCard card = (MonsterCard) cardService.getCard(-1);
@@ -69,7 +69,7 @@ public class CardServiceTest {
             // arrange
             Connection conn = DatabaseService.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES(-1, 'NormalSpellCard', 20, 'NORMAL', 'SPELL')");
+            sm.executeUpdate("INSERT INTO cards(id, hashId, name, damage, element_type, card_type) VALUES(-1, 'NormalSpellCard', 20, 'NORMAL', 'SPELL')");
 
             // act
             SpellCard card = (SpellCard) cardService.getCard(-1);
@@ -96,8 +96,8 @@ public class CardServiceTest {
             // arrange
             Connection conn = DatabaseService.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5, 'WATER', 'MONSTER')");
-            sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES(-2, 'NormalSpellCard', 20, 'NORMAL', 'SPELL')");
+            sm.executeUpdate("INSERT INTO cards(id, hashId, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5, 'WATER', 'MONSTER')");
+            sm.executeUpdate("INSERT INTO cards(id, hashId, name, damage, element_type, card_type) VALUES(-2, 'NormalSpellCard', 20, 'NORMAL', 'SPELL')");
 
             // act
             List<CardInterface> cards = cardService.getCards();
@@ -134,14 +134,14 @@ public class CardServiceTest {
             assertNotNull(card.getName());
 
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, element_type, card_type FROM cards WHERE id = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, hashId, name, damage, element_type, card_type FROM cards WHERE id = ?;");
             ps.setInt(1, card.getId());
             ResultSet rs = ps.executeQuery();
             assertTrue(rs.next());
-            assertEquals("NormalMonsterCard", rs.getString(2));
-            assertEquals(25.5, rs.getFloat(3));
-            assertEquals(ElementType.NORMAL, ElementType.valueOf(rs.getString(4)));
-            assertEquals(CardType.MONSTER, CardType.valueOf(rs.getString(5)));
+            assertEquals("NormalMonsterCard", rs.getString(3));
+            assertEquals(25.5, rs.getFloat(4));
+            assertEquals(ElementType.NORMAL, ElementType.valueOf(rs.getString(5)));
+            assertEquals(CardType.MONSTER, CardType.valueOf(rs.getString(6)));
 
             // cleanup
             Statement sm = conn.createStatement();
@@ -163,7 +163,7 @@ public class CardServiceTest {
             // arrange
             Connection conn = DatabaseService.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            sm.executeUpdate("INSERT INTO cards(id, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5.0, 'WATER', 'MONSTER');");
+            sm.executeUpdate("INSERT INTO cards(id, hashId, name, damage, element_type, card_type) VALUES(-1, 'WaterMonsterCard', 5.0, 'WATER', 'MONSTER');");
 
             // act
             boolean result = cardService.deleteCard(-1);

@@ -35,7 +35,7 @@ public class DeckService implements DeckServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ? AND in_deck;");
+                    "SELECT id, hashId, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ? AND in_deck;");
             ps.setInt(1, user.getId());
             ResultSet rs = ps.executeQuery();
 
