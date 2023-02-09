@@ -69,6 +69,8 @@ public class DeckServlet extends HttpServlet {
 
     @Override
     public HttpResponseInterface handlePut(HttpRequestInterface request) {
+
+        System.out.println("handlePut");
         // Only authorized users can update their decks
         if (request.getAuthUser() == null) return HttpResponse.unauthorized();
 
