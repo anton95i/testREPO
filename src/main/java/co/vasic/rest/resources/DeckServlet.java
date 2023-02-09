@@ -70,39 +70,18 @@ public class DeckServlet extends HttpServlet {
     @Override
     public HttpResponseInterface handlePut(HttpRequestInterface request) {
 
-        System.out.println("handlePut");
         // Only authorized users can update their decks
         if (request.getAuthUser() == null) return HttpResponse.unauthorized();
 
         User user = (User) request.getAuthUser();
 
-        System.out.println(request.getBody());
-
-        //int[] ids = gson.fromJson(request.getBody(), int[].class);
-        //String[] ids = gson.fromJson(request.getBody(), String[].class);
-
-        //String[] ids = gson.fromJson(request.getBody(), String[].class);
-
-        /**
-         * resolve this json
-         * [
-         * {"id": "asgag"},
-         * {"id": "asdfagah"},
-         * {"id": "jadfagag"}
-         *    ]
-         */
         JsonArray jsonArray = gson.fromJson(request.getBody(), JsonArray.class);
-        System.out.println("jsonArray:");
-        System.out.println(jsonArray);
         String[] ids = new String[jsonArray.size()];
         for (int i = 0; i < jsonArray.size(); i++) {
-            System.out.println(jsonArray.get(i));
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            System.out.println(jsonObject.get("id").getAsString());
-            ids[i] = jsonObject.get("id").getAsString();
+            ids[i] = jsonObject.getAsString();
+            System.out.println(ids[i]);
         }
-
-        System.out.println(ids);
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
 
