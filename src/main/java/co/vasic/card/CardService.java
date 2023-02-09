@@ -25,19 +25,20 @@ public class CardService implements CardServiceInterface {
     public CardInterface getCard(int id) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 CardInterface card = Card.fromPrimitives(
                         rs.getInt(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        //rs.getString(4), // card_type
-                        //rs.getString(5), // element_type
-                        rs.getBoolean(6)); // is_locked
-
+                        rs.getString(2), // hashId
+                        rs.getString(3), // name
+                        rs.getFloat(4), // damage
+                        // rs.getString(5), // card_type
+                        // rs.getString(6), // element_type
+                        rs.getBoolean(7)); // is_locked
                 rs.close();
                 ps.close();
                 conn.close();
@@ -61,17 +62,19 @@ public class CardService implements CardServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name, damage, card_type, element_type, is_locked FROM cards;");
+            ResultSet rs = sm
+                    .executeQuery("SELECT id, hashId, name, damage, card_type, element_type, is_locked FROM cards;");
 
             List<CardInterface> cards = new ArrayList<>();
             while (rs.next()) {
                 cards.add(Card.fromPrimitives(
                         rs.getInt(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        //rs.getString(4), // card_type
-                        //rs.getString(5), // element_type
-                        rs.getBoolean(6))); // is_locked
+                        rs.getString(2), // hashId
+                        rs.getString(3), // name
+                        rs.getFloat(4), // damage
+                        // rs.getString(5), // card_type
+                        // rs.getString(6), // element_type
+                        rs.getBoolean(7))); // is_locked
             }
 
             rs.close();
@@ -89,7 +92,8 @@ public class CardService implements CardServiceInterface {
     public List<CardInterface> getCardsForUser(UserInterface user) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ?;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT id, hashId, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ?;");
             ps.setInt(1, user.getId());
             ResultSet rs = ps.executeQuery();
 
@@ -97,11 +101,12 @@ public class CardService implements CardServiceInterface {
             while (rs.next()) {
                 cards.add(Card.fromPrimitives(
                         rs.getInt(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        //rs.getString(4), // card_type
-                        //rs.getString(5), // element_type
-                        rs.getBoolean(6))); // is_locked
+                        rs.getString(2), // hashId
+                        rs.getString(3), // name
+                        rs.getFloat(4), // damage
+                        // rs.getString(5), // card_type
+                        // rs.getString(6), // element_type
+                        rs.getBoolean(7))); // is_locked
             }
 
             rs.close();
@@ -119,7 +124,8 @@ public class CardService implements CardServiceInterface {
     public List<CardInterface> getCardsForPackage(PackageInterface cardPackage) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE package_id = ?;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE package_id = ?;");
             ps.setInt(1, cardPackage.getId());
             ResultSet rs = ps.executeQuery();
 
@@ -127,11 +133,12 @@ public class CardService implements CardServiceInterface {
             while (rs.next()) {
                 cards.add(Card.fromPrimitives(
                         rs.getInt(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        //rs.getString(4), // card_type
-                        //rs.getString(5), // element_type
-                        rs.getBoolean(6))); // is_locked
+                        rs.getString(2), // hashId
+                        rs.getString(3), // name
+                        rs.getFloat(4), // damage
+                        // rs.getString(5), // card_type
+                        // rs.getString(6), // element_type
+                        rs.getBoolean(7))); // is_locked
             }
 
             rs.close();
@@ -149,7 +156,9 @@ public class CardService implements CardServiceInterface {
     public CardInterface addCard(CardInterface card) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO cards(name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);",
+                    Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, card.getName());
             ps.setFloat(2, card.getDamage());
             ps.setString(3, card.getElementType().toString());
@@ -228,7 +237,8 @@ public class CardService implements CardServiceInterface {
     public CardInterface addCardToUser(CardInterface card, UserInterface user) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("UPDATE cards SET package_id = NULL, user_id = ? WHERE id = ?;");
+            PreparedStatement ps = conn
+                    .prepareStatement("UPDATE cards SET package_id = NULL, user_id = ? WHERE id = ?;");
             ps.setInt(1, user.getId());
             ps.setInt(2, card.getId());
 

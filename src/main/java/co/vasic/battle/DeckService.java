@@ -34,7 +34,8 @@ public class DeckService implements DeckServiceInterface {
     public List<CardInterface> getDeck(UserInterface user) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ? AND in_deck;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ? AND in_deck;");
             ps.setInt(1, user.getId());
             ResultSet rs = ps.executeQuery();
 
@@ -42,11 +43,12 @@ public class DeckService implements DeckServiceInterface {
             while (rs.next()) {
                 cards.add(Card.fromPrimitives(
                         rs.getInt(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        //rs.getString(4), // card_type
-                        //rs.getString(5), // element_type
-                        rs.getBoolean(6))); // is_locked
+                        rs.getString(2), // hashId
+                        rs.getString(3), // name
+                        rs.getFloat(4), // damage
+                        // rs.getString(5), // card_type
+                        // rs.getString(6), // element_type
+                        rs.getBoolean(7))); // is_locked
             }
 
             rs.close();
@@ -69,7 +71,8 @@ public class DeckService implements DeckServiceInterface {
         if (ids.length == 4) {
             for (int id : ids) {
                 // Check if the card belongs to the user
-                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == id).collect(Collectors.toList());
+                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == id)
+                        .collect(Collectors.toList());
                 if (filteredCards.size() == 1) {
                     CardInterface card = filteredCards.get(0);
                     newDeck.add(card);

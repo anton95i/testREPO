@@ -46,6 +46,7 @@ public class PackageServlet extends HttpServlet {
 
                 CardInterface card = cardService.addCard(Card.fromPrimitives(
                         0,
+                        cardJson.get("id").getAsString(),
                         cardJson.get("name").getAsString(),
                         cardJson.get("damage").getAsFloat(),
                         //cardJson.get("cardType").getAsString(),

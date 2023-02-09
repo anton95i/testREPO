@@ -3,6 +3,8 @@ package co.vasic.card;
 public interface CardInterface {
     int getId();
 
+    String getHashId();
+
     String getName();
 
     float getDamage();

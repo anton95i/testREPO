@@ -11,6 +11,9 @@ public abstract class Card implements CardInterface {
     int id;
 
     @Getter
+    String hashId;
+
+    @Getter
     String name;
 
     @Getter
@@ -94,7 +97,7 @@ public abstract class Card implements CardInterface {
     }
 
     
-    public static CardInterface fromPrimitives(int id, String name, float damage, boolean locked) {
+    public static CardInterface fromPrimitives(int id, String hashId, String name, float damage, boolean locked) {
         ElementType elementType;
         CardInterface card;
 
@@ -115,6 +118,7 @@ public abstract class Card implements CardInterface {
             System.out.println("SPELL");
             card = SpellCard.builder()
                     .id(id)
+                    .hashId(hashId)
                     .name(name)
                     .damage(damage)
                     .elementType(elementType)
@@ -123,6 +127,7 @@ public abstract class Card implements CardInterface {
             System.out.println("MONSTER");
             card = MonsterCard.builder()
                     .id(id)
+                    .hashId(hashId)
                     .name(name)
                     .damage(damage)
                     .elementType(elementType)
