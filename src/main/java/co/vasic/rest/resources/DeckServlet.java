@@ -73,7 +73,9 @@ public class DeckServlet extends HttpServlet {
 
         User user = (User) request.getAuthUser();
         //int[] ids = gson.fromJson(request.getBody(), int[].class);
-        String[] ids = gson.fromJson(request.getBody(), String[].class);
+        //String[] ids = gson.fromJson(request.getBody(), String[].class);
+        // get values from request body with "id" key
+        String[] ids = gson.fromJson(request.getBody(), HashMap.class).get("id").toString().split(",");
         System.out.println(ids);
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
