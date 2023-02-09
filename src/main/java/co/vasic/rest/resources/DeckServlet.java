@@ -81,12 +81,26 @@ public class DeckServlet extends HttpServlet {
 
         //String[] ids = gson.fromJson(request.getBody(), String[].class);
 
-        JsonObject jsonObject = JsonParser.parseString(request.getBody()).getAsJsonObject();
-        JsonArray jsonArray = jsonObject.getAsJsonArray("cards");
-        String[] ids = new String[jsonArray.size()];
-        for (int i = 0; i < jsonArray.size(); i++) {
-            ids[i] = jsonArray.get(i).getAsString();
-        }
+        /**
+         * resolve this json
+         * {
+         *  "cards":
+         *     [
+         * {"id": "asgag"},
+         * {"id": "asdfagah"},
+         * {"id": "jadfagag"}
+         *    ]
+        * }
+         */
+
+        JsonParser parser = new JsonParser();
+        JsonElement element = parser.parse(request.getBody());
+        JsonArray array = element.getAsJsonObject().get("cards").getAsJsonArray();
+
+        String[] ids = new String[array.size()];
+        for (int i = 0; i < array.size(); i++) {
+            ids[i] = array.get(i).getAsJsonObject().get("id").getAsString();
+        }        
 
         System.out.println(ids);
 
