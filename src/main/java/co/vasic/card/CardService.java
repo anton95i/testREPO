@@ -157,7 +157,7 @@ public class CardService implements CardServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO cards(hashId, name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);",
+                    "INSERT INTO cards(hashId, name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?,?);",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, card.getHashId());
             ps.setString(2, card.getName());
