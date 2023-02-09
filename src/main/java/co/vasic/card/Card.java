@@ -101,21 +101,15 @@ public abstract class Card implements CardInterface {
         ElementType elementType;
         CardInterface card;
 
-        System.out.println(name);
-
         if (name.toLowerCase().contains("fire")) {
             elementType = ElementType.FIRE;
-            System.out.println("FIRE");
         } else if (name.toLowerCase().contains("water")) {
             elementType = ElementType.WATER;
-            System.out.println("WATER");
         } else {
             elementType = ElementType.NORMAL;
-            System.out.println("NORMAL");
         }
 
         if (name.toLowerCase().contains("spell")) {
-            System.out.println("SPELL");
             card = SpellCard.builder()
                     .id(id)
                     .hashId(hashId)
@@ -124,7 +118,6 @@ public abstract class Card implements CardInterface {
                     .elementType(elementType)
                     .build();
         } else {
-            System.out.println("MONSTER");
             card = MonsterCard.builder()
                     .id(id)
                     .hashId(hashId)

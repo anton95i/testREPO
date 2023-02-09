@@ -79,11 +79,12 @@ public class DeckServlet extends HttpServlet {
         String[] ids = new String[jsonArray.size()];
         for (int i = 0; i < jsonArray.size(); i++) {
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            ids[i] = jsonObject.getAsString();
-            System.out.println(ids[i]);
+            ids[i] = jsonObject.get("id").getAsString();
         }
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
+
+        System.out.println("Result: " + result);
 
         int statusCode = result ? 200 : 400;
         String reasonPhrase = result ? "OK" : "Bad Request";
