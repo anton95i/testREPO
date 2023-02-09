@@ -98,6 +98,7 @@ public class DeckServlet extends HttpServlet {
         for (int i = 0; i < jsonArray.size(); i++) {
             System.out.println(jsonArray.get(i));
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
+            System.out.println(jsonObject.get("id").getAsString());
             ids[i] = jsonObject.get("id").getAsString();
         }
 
