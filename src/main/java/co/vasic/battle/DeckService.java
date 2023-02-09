@@ -73,7 +73,7 @@ public class DeckService implements DeckServiceInterface {
                 // Check if the card belongs to the user
                 System.out.println("id = " + id);
                 System.out.println("hashIdSample = " + userCards.get(0).getHashId());
-                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId() == id)
+                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId().equals(id))
                         .collect(Collectors.toList());
                 if (filteredCards.size() == 1) {
                     CardInterface card = filteredCards.get(0);
