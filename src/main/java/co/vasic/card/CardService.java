@@ -26,7 +26,7 @@ public class CardService implements CardServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
+                    "SELECT id, hashId, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -125,7 +125,7 @@ public class CardService implements CardServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(
-                    "SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE package_id = ?;");
+                    "SELECT id, hashId, name, damage, card_type, element_type, is_locked FROM cards WHERE package_id = ?;");
             ps.setInt(1, cardPackage.getId());
             ResultSet rs = ps.executeQuery();
 
@@ -157,14 +157,15 @@ public class CardService implements CardServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO cards(name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);",
+                    "INSERT INTO cards(hashId, name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, card.getName());
-            ps.setFloat(2, card.getDamage());
-            ps.setString(3, card.getElementType().toString());
-            ps.setString(4, card.getCardType().toString());
-            ps.setNull(5, java.sql.Types.NULL);
+            ps.setString(1, card.getHashId());
+            ps.setString(2, card.getName());
+            ps.setFloat(3, card.getDamage());
+            ps.setString(4, card.getElementType().toString());
+            ps.setString(5, card.getCardType().toString());
             ps.setNull(6, java.sql.Types.NULL);
+            ps.setNull(7, java.sql.Types.NULL);
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
