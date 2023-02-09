@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DeckServlet extends HttpServlet {
 
@@ -72,11 +73,16 @@ public class DeckServlet extends HttpServlet {
         if (request.getAuthUser() == null) return HttpResponse.unauthorized();
 
         User user = (User) request.getAuthUser();
+
+        System.out.println(request.getBody());
+
         //int[] ids = gson.fromJson(request.getBody(), int[].class);
         //String[] ids = gson.fromJson(request.getBody(), String[].class);
-        // get values from request body with "id" key
-        System.out.println(request.getBody());
-        String[] ids = gson.fromJson(request.getBody(), HashMap.class).get("id").toString().split(",");
+
+        //String[] ids = gson.fromJson(request.getBody(), String[].class);
+        Map ids = gson.fromJson(request.getBody(), Map.class);
+        // get multiple keys "id" from body
+
         System.out.println(ids);
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
