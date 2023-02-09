@@ -76,12 +76,12 @@ public class DeckServlet extends HttpServlet {
 
         System.out.println(request.getBody());
 
+        System.out.println(gson.fromJson(request.getBody(), Map.class));
+
         //int[] ids = gson.fromJson(request.getBody(), int[].class);
         //String[] ids = gson.fromJson(request.getBody(), String[].class);
 
-        //String[] ids = gson.fromJson(request.getBody(), String[].class);
-        Map ids = gson.fromJson(request.getBody(), Map.class);
-        // get multiple keys "id" from body
+        String[] ids = gson.fromJson(request.getBody(), String[].class);
 
         System.out.println(ids);
 
