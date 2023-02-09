@@ -72,7 +72,9 @@ public class DeckServlet extends HttpServlet {
         if (request.getAuthUser() == null) return HttpResponse.unauthorized();
 
         User user = (User) request.getAuthUser();
-        int[] ids = gson.fromJson(request.getBody(), int[].class);
+        //int[] ids = gson.fromJson(request.getBody(), int[].class);
+        String[] ids = gson.fromJson(request.getBody(), String[].class);
+        System.out.println(ids);
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
 

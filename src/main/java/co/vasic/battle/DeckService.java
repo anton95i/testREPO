@@ -63,15 +63,15 @@ public class DeckService implements DeckServiceInterface {
     }
 
     @Override
-    public boolean addCardsWithIdsToDeck(int[] ids, UserInterface user) {
+    public boolean addCardsWithIdsToDeck(String[] ids, UserInterface user) {
         List<CardInterface> userCards = cardService.getCardsForUser(user);
         List<CardInterface> newDeck = new ArrayList<>();
 
         // A deck can only consist of 4 cards
         if (ids.length == 4) {
-            for (int id : ids) {
+            for (String id : ids) {
                 // Check if the card belongs to the user
-                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == id)
+                List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId() == id)
                         .collect(Collectors.toList());
                 if (filteredCards.size() == 1) {
                     CardInterface card = filteredCards.get(0);

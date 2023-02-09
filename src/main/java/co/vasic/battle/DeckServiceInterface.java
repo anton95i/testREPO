@@ -8,7 +8,7 @@ import java.util.List;
 public interface DeckServiceInterface {
     List<CardInterface> getDeck(UserInterface user);
 
-    boolean addCardsWithIdsToDeck(int[] ids, UserInterface user);
+    boolean addCardsWithIdsToDeck(String[] ids, UserInterface user);
 
     boolean addCardToDeck(CardInterface card, UserInterface user);
 
