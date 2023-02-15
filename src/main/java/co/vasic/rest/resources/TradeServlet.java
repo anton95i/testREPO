@@ -61,12 +61,12 @@ public class TradeServlet extends HttpServlet {
 
         if (jsonObject.has("CardToTrade")) {
 
-            System.out.println("CardToTrade");  
-            System.out.println(jsonObject.get("CardToTrade").getAsInt());
+            System.out.println("CardToTrade");
+            System.out.println(jsonObject.get("CardToTrade").getAsString());
 
-            int id = jsonObject.get("CardToTrade").getAsInt();
+            String id = jsonObject.get("CardToTrade").getAsString();
             List<CardInterface> userCards = cardService.getCardsForUser(user);
-            List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == id).collect(Collectors.toList());
+            List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId() == id).collect(Collectors.toList());
             if (filteredCards.size() > 0) {
                 Trade trade = (Trade) tradeService.addTrade(filteredCards.get(0));
 
