@@ -60,7 +60,8 @@ public class TradeServlet extends HttpServlet {
         System.out.println(jsonObject);
 
         if (jsonObject.has("CardToTrade")) {
-                
+
+            System.out.println("CardToTrade");  
             System.out.println(jsonObject.get("CardToTrade").getAsInt());
 
             int id = jsonObject.get("CardToTrade").getAsInt();
