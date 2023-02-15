@@ -93,6 +93,8 @@ public class DeckServlet extends HttpServlet {
                     .build();
         }
 
+        System.out.println("CheckCards is empty");
+
         JsonArray jsonArray = gson.fromJson(request.getBody(), JsonArray.class);
         String[] ids = new String[jsonArray.size()];
         for (int i = 0; i < jsonArray.size(); i++) {
