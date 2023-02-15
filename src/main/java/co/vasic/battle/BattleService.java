@@ -41,10 +41,10 @@ public class BattleService implements BattleServiceInterface {
             Statement sm = conn.createStatement();
             ResultSet rs = sm.executeQuery("SELECT id FROM battles WHERE player_a IS NULL OR player_b IS NULL LIMIT 1;");
 
-            System.out.println("rs: " + rs);
-            System.out.println(rs);
             System.out.println(rs.next());
-            System.out.println(rs.getInt(1));
+            if(rs.next()) {
+                System.out.println(rs.getInt(1));
+            }
 
             Battle battle;
             if (rs.next()) {
