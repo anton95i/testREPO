@@ -74,7 +74,21 @@ public class DeckServlet extends HttpServlet {
         if (request.getAuthUser() == null) return HttpResponse.unauthorized();
 
         User user = (User) request.getAuthUser();
+        List<CardInterface> checkCards = deckService.getDeck(user);
 
+        if(checkCards.size() > 0) {
+            String returnBody = gson.toJson(checkCards);
+            String returnContentType = "application/json";
+            return HttpResponse.builder()
+                    .statusCode(400)
+                    .reasonPhrase("Bad Request")
+                    .headers(new HashMap<>() {{
+                        put("Content-Type", returnContentType);
+                    }})
+                    .body(returnBody)
+                    .build();
+        }
+        
         JsonArray jsonArray = gson.fromJson(request.getBody(), JsonArray.class);
         String[] ids = new String[jsonArray.size()];
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -83,8 +97,6 @@ public class DeckServlet extends HttpServlet {
         }
 
         boolean result = deckService.addCardsWithIdsToDeck(ids, user);
-
-        System.out.println("Result: " + result);
 
         int statusCode = result ? 200 : 400;
         String reasonPhrase = result ? "OK" : "Bad Request";
