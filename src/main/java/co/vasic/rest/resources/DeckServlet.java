@@ -76,6 +76,9 @@ public class DeckServlet extends HttpServlet {
         User user = (User) request.getAuthUser();
         List<CardInterface> checkCards = deckService.getDeck(user);
 
+        System.out.println("checkCards: ");
+        System.out.println(checkCards);
+
         if(checkCards.size() > 0) {
             String returnBody = gson.toJson(checkCards);
             String returnContentType = "application/json";
@@ -88,7 +91,7 @@ public class DeckServlet extends HttpServlet {
                     .body(returnBody)
                     .build();
         }
-        
+
         JsonArray jsonArray = gson.fromJson(request.getBody(), JsonArray.class);
         String[] ids = new String[jsonArray.size()];
         for (int i = 0; i < jsonArray.size(); i++) {
