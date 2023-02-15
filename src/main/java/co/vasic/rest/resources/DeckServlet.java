@@ -34,7 +34,7 @@ public class DeckServlet extends HttpServlet {
         String returnBody;
         String returnContentType;
 
-        if ("text/plain".equals(request.getHeaders().get("Accept"))) {
+        if ("plain".equals(request.getHeaders().get("format"))) {
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.append("Deck: ");
