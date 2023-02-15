@@ -78,7 +78,8 @@ public class DeckServlet extends HttpServlet {
 
         System.out.println("checkCards: ");
         System.out.println(checkCards);
-
+        System.out.println("checkCards.size(): " + checkCards.size());
+        
         if(checkCards.size() > 0) {
             String returnBody = gson.toJson(checkCards);
             String returnContentType = "application/json";
