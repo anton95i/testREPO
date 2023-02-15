@@ -43,6 +43,8 @@ public class BattleService implements BattleServiceInterface {
 
             System.out.println("rs: " + rs);
             System.out.println(rs);
+            System.out.println(rs.next());
+            System.out.println(rs.getInt(1));
 
             Battle battle;
             if (rs.next()) {
