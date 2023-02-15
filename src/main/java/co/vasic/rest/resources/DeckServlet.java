@@ -37,6 +37,9 @@ public class DeckServlet extends HttpServlet {
         System.out.println("getHeaders:");
         System.out.println(request.getHeaders());
         System.out.println(request.getHeaders().get("format"));
+        System.out.println("getParams:");
+        System.out.println(request.getParams());
+        System.out.println(request.getParams().get("format"));
 
         if ("plain".equals(request.getHeaders().get("format"))) {
             StringBuilder stringBuilder = new StringBuilder();
