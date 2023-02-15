@@ -56,8 +56,8 @@ public class TradeServlet extends HttpServlet {
         User user = (User) request.getAuthUser();
 
         JsonObject jsonObject = JsonParser.parseString(request.getBody()).getAsJsonObject();
-        if (jsonObject.has("cardA")) {
-            int id = jsonObject.get("cardA").getAsInt();
+        if (jsonObject.has("CardToTrade")) {
+            int id = jsonObject.get("CardToTrade").getAsInt();
             List<CardInterface> userCards = cardService.getCardsForUser(user);
             List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == id).collect(Collectors.toList());
             if (filteredCards.size() > 0) {
