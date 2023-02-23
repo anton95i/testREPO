@@ -14,7 +14,7 @@ public interface TradeServiceInterface {
 
     boolean deleteTrade(String id);
 
-    TradeInterface addOffer(TradeInterface trade, CardInterface card, int coins);
+    TradeInterface addOffer(TradeInterface trade, CardInterface card);
 
     TradeInterface acceptTrade(TradeInterface trade);
 }

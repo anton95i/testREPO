@@ -160,14 +160,13 @@ public class TradeService implements TradeServiceInterface {
     }
 
     @Override
-    public TradeInterface addOffer(TradeInterface trade, CardInterface card, int coins) {
+    public TradeInterface addOffer(TradeInterface trade, CardInterface card) {
         if (!card.isLocked()) {
             try {
                 Connection conn = DatabaseService.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement("UPDATE trades SET card_b = ?, coins = ? WHERE id = ?;");
+                PreparedStatement ps = conn.prepareStatement("UPDATE trades SET card_b = ? WHERE id = ?;");
                 ps.setInt(1, card.getId());
-                ps.setInt(2, coins);
-                ps.setInt(3, trade.getId());
+                ps.setInt(2, trade.getId());
 
                 int affectedRows = ps.executeUpdate();
 
