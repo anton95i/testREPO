@@ -184,9 +184,9 @@ public class TradeService implements TradeServiceInterface {
                         Connection conn2 = DatabaseService.getInstance().getConnection();
                         PreparedStatement ps2 = conn2.prepareStatement("SELECT id, tradeId, card_a, card_b, card_type, minimum_damage FROM trades WHERE id=?;");
                         ps2.setInt(1, trade.getId());
-                        ResultSet rs = ps.executeQuery();
+                        ResultSet rs2 = ps2.executeQuery();
 
-                        if (rs.next()) {
+                        if (rs2.next()) {
                             User userA = (User) userService.getUser(trade.getCardA().getUserId());
                             User userB = (User) userService.getUser(card.getUserId());
 
