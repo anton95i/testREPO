@@ -145,7 +145,7 @@ public class TradeService implements TradeServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM trades WHERE id = ?;");
-            ps.setString(1, id);
+            ps.setInt(1, trade.getId());
 
             int affectedRows = ps.executeUpdate();
 
