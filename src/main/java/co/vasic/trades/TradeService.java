@@ -38,8 +38,8 @@ public class TradeService implements TradeServiceInterface {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                CardInterface cardA = cardService.getCard(rs.getInt(2));
-                CardInterface cardB = cardService.getCard(rs.getInt(3));
+                CardInterface cardA = cardService.getCard(rs.getInt(3));
+                CardInterface cardB = cardService.getCard(rs.getInt(4));
 
                 Trade trade = Trade.builder()
                         .id(rs.getInt(1))
