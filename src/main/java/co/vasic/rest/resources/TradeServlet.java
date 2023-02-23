@@ -2,6 +2,7 @@ package co.vasic.rest.resources;
 
 import co.vasic.card.CardInterface;
 import co.vasic.card.CardService;
+import co.vasic.card.CardType;
 import co.vasic.rest.HttpRequestInterface;
 import co.vasic.rest.HttpResponse;
 import co.vasic.rest.HttpResponseInterface;
@@ -65,10 +66,13 @@ public class TradeServlet extends HttpServlet {
             System.out.println(jsonObject.get("CardToTrade").getAsString());
 
             String id = jsonObject.get("CardToTrade").getAsString();
+            String tradeId = jsonObject.get("id").getAsString();
+            CardType cardType = CardType.valueOf(jsonObject.get("Type").getAsString());
+            int minimumDamage = jsonObject.get("MinimumDamage").getAsInt();
             List<CardInterface> userCards = cardService.getCardsForUser(user);
             List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId().equals(id)).collect(Collectors.toList());
             if (filteredCards.size() > 0) {
-                Trade trade = (Trade) tradeService.addTrade(filteredCards.get(0));
+                Trade trade = (Trade) tradeService.addTrade(filteredCards.get(0), tradeId, cardType, minimumDamage);
 
                 if (trade != null) {
                     return HttpResponse.builder()
@@ -93,7 +97,7 @@ public class TradeServlet extends HttpServlet {
 
         Matcher m = pattern.matcher(request.getPath());
         if (m.matches()) {
-            int id = Integer.parseInt(m.group(1));
+            String id = m.group(1);
             Trade trade = (Trade) tradeService.getTrade(id);
 
             if (trade != null) {
@@ -135,10 +139,10 @@ public class TradeServlet extends HttpServlet {
 
         Matcher m = Pattern.compile("/trades/(\\d+)/accept/?").matcher(request.getPath());
         if (m.matches()) {
-            int id = Integer.parseInt(m.group(1));
+            String id = m.group(1);
             Trade trade = (Trade) tradeService.getTrade(id);
 
-            if (trade != null && trade.getCardA() != null && (trade.getCardB() != null || trade.getCoins() > 0)) {
+            if (trade != null && trade.getCardA() != null && (trade.getCardB() != null)) {
                 List<CardInterface> userCards = cardService.getCardsForUser(user);
 
                 Trade finalTrade = trade;
@@ -171,7 +175,7 @@ public class TradeServlet extends HttpServlet {
 
         Matcher m = pattern.matcher(request.getPath());
         if (m.matches()) {
-            int id = Integer.parseInt(m.group(1));
+            String id = m.group(1);
 
             Trade trade = (Trade) tradeService.getTrade(id);
 
@@ -179,7 +183,7 @@ public class TradeServlet extends HttpServlet {
                 List<CardInterface> userCards = cardService.getCardsForUser(user);
                 List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getId() == trade.getCardA().getId()).collect(Collectors.toList());
                 if (filteredCards.size() > 0) {
-                    if (tradeService.deleteTrade(trade.getId())) {
+                    if (tradeService.deleteTrade(trade.getTradeId())) {
                         return HttpResponse.ok();
                     }
                 }

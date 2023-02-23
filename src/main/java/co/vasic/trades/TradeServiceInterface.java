@@ -1,17 +1,18 @@
 package co.vasic.trades;
 
 import co.vasic.card.CardInterface;
+import co.vasic.card.CardType;
 
 import java.util.List;
 
 public interface TradeServiceInterface {
-    TradeInterface getTrade(int id);
+    TradeInterface getTrade(String id);
 
     List<TradeInterface> getTrades();
 
-    TradeInterface addTrade(CardInterface card);
+    TradeInterface addTrade(CardInterface card, String tradeId, CardType cardType, int minimumDamage);
 
-    boolean deleteTrade(int id);
+    boolean deleteTrade(String id);
 
     TradeInterface addOffer(TradeInterface trade, CardInterface card, int coins);
 

@@ -2,6 +2,7 @@ package co.vasic.trades;
 
 import co.vasic.card.CardInterface;
 import co.vasic.card.CardService;
+import co.vasic.card.CardType;
 import co.vasic.database.DatabaseService;
 import co.vasic.user.User;
 import co.vasic.user.UserService;
@@ -28,11 +29,12 @@ public class TradeService implements TradeServiceInterface {
     }
 
     @Override
-    public TradeInterface getTrade(int id) {
+    public TradeInterface getTrade(String id) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, card_a, card_b, coins, accepted FROM trades WHERE id=?;");
-            ps.setInt(1, id);
+            //PreparedStatement ps = conn.prepareStatement("SELECT id, card_a, card_b, coins, accepted FROM trades WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, tradeId, card_a, card_b, card_type, minimum_damage FROM trades WHERE tradeId=?;");
+            ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -40,11 +42,12 @@ public class TradeService implements TradeServiceInterface {
                 CardInterface cardB = cardService.getCard(rs.getInt(3));
 
                 Trade trade = Trade.builder()
-                        .id((rs.getInt(1)))
+                        .id(rs.getInt(1))
+                        .tradeId(rs.getString(2))
                         .cardA(cardA)
                         .cardB(cardB)
-                        .coins(rs.getInt(4))
-                        .accepted(rs.getBoolean(5))
+                        .cardType(CardType.valueOf(rs.getString(5)))
+                        .minimumDamage(rs.getInt(6))
                         .build();
 
                 rs.close();
@@ -69,12 +72,12 @@ public class TradeService implements TradeServiceInterface {
     public List<TradeInterface> getTrades() {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id FROM trades;");
+            PreparedStatement ps = conn.prepareStatement("SELECT tradeId FROM trades;");
             ResultSet rs = ps.executeQuery();
 
             List<TradeInterface> trades = new ArrayList<>();
             while (rs.next()) {
-                trades.add(this.getTrade(rs.getInt(1)));
+                trades.add(this.getTrade(rs.getString(1)));
             }
 
             rs.close();
@@ -89,12 +92,15 @@ public class TradeService implements TradeServiceInterface {
     }
 
     @Override
-    public TradeInterface addTrade(CardInterface card) {
+    public TradeInterface addTrade(CardInterface card, String tradeId, CardType cardType, int minimumDamage) {
         if (!card.isLocked()) {
             try {
                 Connection conn = DatabaseService.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO trades(card_a) VALUES(?);", Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, card.getId());
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO trades(tradeId, card_a, card_type, minimum_damaga) VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, tradeId);
+                ps.setInt(2, card.getId());
+                ps.setString(3, cardType.name());
+                ps.setInt(4, minimumDamage);
 
                 int affectedRows = ps.executeUpdate();
                 if (affectedRows == 0) {
@@ -103,7 +109,7 @@ public class TradeService implements TradeServiceInterface {
 
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        int id = generatedKeys.getInt(1);
+                        String id = generatedKeys.getString(2);
                         ps.close();
                         conn.close();
 
@@ -122,7 +128,7 @@ public class TradeService implements TradeServiceInterface {
     }
 
     @Override
-    public boolean deleteTrade(int id) {
+    public boolean deleteTrade(String id) {
         // Unlock cards
         Trade trade = (Trade) this.getTrade(id);
         if (trade != null) {
@@ -139,7 +145,7 @@ public class TradeService implements TradeServiceInterface {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM trades WHERE id = ?;");
-            ps.setInt(1, id);
+            ps.setString(1, id);
 
             int affectedRows = ps.executeUpdate();
 
@@ -169,7 +175,7 @@ public class TradeService implements TradeServiceInterface {
                 conn.close();
 
                 if (affectedRows > 0) {
-                    return this.getTrade(trade.getId());
+                    return this.getTrade(trade.getTradeId());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -199,7 +205,7 @@ public class TradeService implements TradeServiceInterface {
                 ps.setInt(1, trade.getId());
                 int affectedRows = ps.executeUpdate();
                 if (affectedRows != 0) {
-                    return this.getTrade(trade.getId());
+                    return this.getTrade(trade.getTradeId());
                 }
             }
         } catch (SQLException e) {
