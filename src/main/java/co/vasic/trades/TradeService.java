@@ -96,7 +96,7 @@ public class TradeService implements TradeServiceInterface {
         if (!card.isLocked()) {
             try {
                 Connection conn = DatabaseService.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO trades(tradeId, card_a, card_type, minimum_damaga) VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO trades(tradeId, card_a, card_type, minimum_damage) VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, tradeId);
                 ps.setInt(2, card.getId());
                 ps.setString(3, cardType.name());
