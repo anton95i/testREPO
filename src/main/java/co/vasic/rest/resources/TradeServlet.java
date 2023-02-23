@@ -175,8 +175,8 @@ public class TradeServlet extends HttpServlet {
 
         Matcher m = pattern.matcher(request.getPath());
         if (m.matches()) {
-            //String id = m.group(1);
-            String id = request.getParams().get("id");
+            String id = m.group(1);
+            //String id = request.getParams().get("id");
 
             Trade trade = (Trade) tradeService.getTrade(id);
 
