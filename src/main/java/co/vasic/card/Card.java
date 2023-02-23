@@ -23,6 +23,9 @@ public abstract class Card implements CardInterface {
     ElementType elementType;
 
     @Getter
+    int userId;
+
+    @Getter
     boolean locked;
 
     @Override

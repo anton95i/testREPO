@@ -9,6 +9,8 @@ public interface CardInterface {
 
     float getDamage();
 
+    int getUserId();
+
     float calculateDamage(CardInterface card);
 
     CardType getCardType();

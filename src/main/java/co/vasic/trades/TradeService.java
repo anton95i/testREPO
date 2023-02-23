@@ -32,8 +32,10 @@ public class TradeService implements TradeServiceInterface {
     public TradeInterface getTrade(String id) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            //PreparedStatement ps = conn.prepareStatement("SELECT id, card_a, card_b, coins, accepted FROM trades WHERE id=?;");
-            PreparedStatement ps = conn.prepareStatement("SELECT id, tradeId, card_a, card_b, card_type, minimum_damage FROM trades WHERE tradeId=?;");
+            // PreparedStatement ps = conn.prepareStatement("SELECT id, card_a, card_b,
+            // coins, accepted FROM trades WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT id, tradeId, card_a, card_b, card_type, minimum_damage FROM trades WHERE tradeId=?;");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -96,7 +98,9 @@ public class TradeService implements TradeServiceInterface {
         if (!card.isLocked()) {
             try {
                 Connection conn = DatabaseService.getInstance().getConnection();
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO trades(tradeId, card_a, card_type, minimum_damage) VALUES(?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = conn.prepareStatement(
+                        "INSERT INTO trades(tradeId, card_a, card_type, minimum_damage) VALUES(?, ?, ?, ?);",
+                        Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, tradeId);
                 ps.setInt(2, card.getId());
                 ps.setString(3, cardType.name());
@@ -174,7 +178,35 @@ public class TradeService implements TradeServiceInterface {
                 conn.close();
 
                 if (affectedRows > 0) {
-                    return this.getTrade(trade.getTradeId());
+                    // return this.getTrade(trade.getTradeId());
+
+                    try {
+                        Connection conn2 = DatabaseService.getInstance().getConnection();
+                        PreparedStatement ps2 = conn2.prepareStatement("SELECT id, tradeId, card_a, card_b, card_type, minimum_damage FROM trades WHERE id=?;");
+                        ps2.setInt(1, trade.getId());
+                        ResultSet rs = ps.executeQuery();
+
+                        if (rs.next()) {
+                            User userA = (User) userService.getUser(trade.getCardA().getUserId());
+                            User userB = (User) userService.getUser(card.getUserId());
+
+                            cardService.addCardToUser(trade.getCardA(), userB);
+                            cardService.addCardToUser(card, userA);
+                            cardService.lockCard(trade.getCardB(), false);
+                            cardService.lockCard(trade.getCardA(), false);
+
+                            ps2 = conn2.prepareStatement("DELETE FROM trades WHERE id = ?;");
+                            ps2.setInt(1, trade.getId());
+                            int affectedRows2 = ps2.executeUpdate();
+                            if (affectedRows2 != 0) {
+                                return this.getTrade(trade.getTradeId());
+                            }
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -187,7 +219,8 @@ public class TradeService implements TradeServiceInterface {
     public TradeInterface acceptTrade(TradeInterface trade) {
         try {
             Connection conn = DatabaseService.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT a.user_id, b.user_id FROM trades JOIN cards a on trades.card_a = a.id JOIN cards b ON trades.card_b = b.id WHERE trades.id=?;");
+            PreparedStatement ps = conn.prepareStatement(
+                    "SELECT a.user_id, b.user_id FROM trades JOIN cards a on trades.card_a = a.id JOIN cards b ON trades.card_b = b.id WHERE trades.id=?;");
             ps.setInt(1, trade.getId());
             ResultSet rs = ps.executeQuery();
 
