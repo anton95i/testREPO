@@ -128,6 +128,10 @@ public class TradeServlet extends HttpServlet {
 
                         Card cardB = (Card) filteredCards.get(0);
 
+                        CardType cardBType = cardB.getCardType();
+
+                        System.out.println(cardBType);
+
                         if (cardB.getDamage() >= trade.getMinimumDamage()
                                 && cardB.getCardType().equals(trade.getCardType())) {
 
