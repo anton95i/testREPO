@@ -51,7 +51,7 @@ public class PackageServlet extends HttpServlet {
                         cardJson.get("damage").getAsFloat(),
                         //cardJson.get("cardType").getAsString(),
                         //cardJson.get("elementType").getAsString(),
-                        null,
+                        0,
                         false
                 ));
                 card = cardService.addCardToPackage(card, cardPackage);
