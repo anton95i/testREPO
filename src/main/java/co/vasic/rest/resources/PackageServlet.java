@@ -27,8 +27,6 @@ public class PackageServlet extends HttpServlet {
     public HttpResponseInterface handlePost(HttpRequestInterface request) {
 
         // Only admins can create card packages.
-        System.out.println(request.getHeaders());
-        System.out.println(request.getBody());
         if (request.getAuthUser() == null || !"admin".equalsIgnoreCase(request.getAuthUser().getUsername())) {
             return HttpResponse.unauthorized();
         }

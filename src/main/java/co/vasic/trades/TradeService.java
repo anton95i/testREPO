@@ -190,21 +190,16 @@ public class TradeService implements TradeServiceInterface {
                             User userA = (User) userService.getUser(trade.getCardA().getUserId());
                             User userB = (User) userService.getUser(card.getUserId());
 
-                            System.out.println("Users found");
-
                             cardService.addCardToUser(trade.getCardA(), userB);
                             cardService.addCardToUser(card, userA);
                             //cardService.lockCard(trade.getCardB(), false);
                             cardService.lockCard(trade.getCardA(), false);
 
-                            System.out.println("Cards added to users");
-
                             ps2 = conn2.prepareStatement("DELETE FROM trades WHERE id = ?;");
                             ps2.setInt(1, trade.getId());
                             int affectedRows2 = ps2.executeUpdate();
                             if (affectedRows2 != 0) {
-                                System.out.println("Trade deleted");
-                                return this.getTrade(trade.getTradeId());
+                                return trade;
                             }
                         }
                     } catch (SQLException e) {

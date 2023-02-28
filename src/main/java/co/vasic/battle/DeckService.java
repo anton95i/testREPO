@@ -72,12 +72,10 @@ public class DeckService implements DeckServiceInterface {
         if (ids.length == 4) {
             for (String id : ids) {
                 // Check if the card belongs to the user
-                System.out.println("id = " + id);
                 List<CardInterface> filteredCards = userCards.stream().filter(card -> card.getHashId().equals(id))
                         .collect(Collectors.toList());
                 if (filteredCards.size() == 1) {
                     CardInterface card = filteredCards.get(0);
-                    System.out.println(card);
                     newDeck.add(card);
                 } else {
                     System.out.println("Card not found");

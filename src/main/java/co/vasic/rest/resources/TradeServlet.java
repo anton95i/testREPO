@@ -63,12 +63,7 @@ public class TradeServlet extends HttpServlet {
 
         JsonObject jsonObject = JsonParser.parseString(request.getBody()).getAsJsonObject();
 
-        System.out.println(jsonObject);
-
         if (jsonObject.has("CardToTrade")) {
-
-            System.out.println("CardToTrade");
-            System.out.println(jsonObject.get("CardToTrade").getAsString());
 
             String id = jsonObject.get("CardToTrade").getAsString();
             String tradeId = jsonObject.get("id").getAsString();
@@ -109,17 +104,11 @@ public class TradeServlet extends HttpServlet {
             String id = m.group(1);
             Trade trade = (Trade) tradeService.getTrade(id);
 
-            System.out.println("A");
-
             if (trade != null) {
-
-                System.out.println("B");
 
                 JsonObject jsonObject = JsonParser.parseString(request.getBody()).getAsJsonObject();
 
                 if (jsonObject.has("CardToTrade")) {
-
-                    System.out.println("C");
 
                     String cardId = jsonObject.get("CardToTrade").getAsString();
                     Card cardA = (Card) trade.getCardA();
@@ -132,18 +121,12 @@ public class TradeServlet extends HttpServlet {
 
                     if (filteredCards.size() > 0 && filteredCardsToCheck.size() == 0) {
 
-                        System.out.println("D");
-
                         Card cardB = (Card) filteredCards.get(0);
 
                         CardType cardBType = cardB.getCardType();
 
-                        System.out.println(cardBType);
-
                         if (cardB.getDamage() >= trade.getMinimumDamage()
                                 && cardB.getCardType().equals(trade.getCardType())) {
-
-                            System.out.println("E");
 
                             trade = (Trade) tradeService.addOffer(trade, filteredCards.get(0));
 
