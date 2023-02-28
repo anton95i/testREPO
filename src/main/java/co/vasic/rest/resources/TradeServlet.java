@@ -143,7 +143,7 @@ public class TradeServlet extends HttpServlet {
                         if (cardB.getDamage() >= trade.getMinimumDamage()
                                 && cardB.getCardType().equals(trade.getCardType())) {
 
-                                    System.out.println("E");
+                            System.out.println("E");
 
                             trade = (Trade) tradeService.addOffer(trade, filteredCards.get(0));
 

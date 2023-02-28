@@ -48,6 +48,7 @@ public class DeckService implements DeckServiceInterface {
                         rs.getFloat(4), // damage
                         // rs.getString(5), // card_type
                         // rs.getString(6), // element_type
+                        user.getId(), // user_id
                         rs.getBoolean(7))); // is_locked
             }
 

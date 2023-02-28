@@ -100,7 +100,7 @@ public abstract class Card implements CardInterface {
     }
 
     
-    public static CardInterface fromPrimitives(int id, String hashId, String name, float damage, boolean locked) {
+    public static CardInterface fromPrimitives(int id, String hashId, String name, float damage, Integer user_id, boolean locked) {
         ElementType elementType;
         CardInterface card;
 
@@ -119,6 +119,7 @@ public abstract class Card implements CardInterface {
                     .name(name)
                     .damage(damage)
                     .elementType(elementType)
+                    .userId(user_id)
                     .build();
         } else {
             card = MonsterCard.builder()
@@ -127,6 +128,7 @@ public abstract class Card implements CardInterface {
                     .name(name)
                     .damage(damage)
                     .elementType(elementType)
+                    .userId(user_id)
                     .build();
         }
 
