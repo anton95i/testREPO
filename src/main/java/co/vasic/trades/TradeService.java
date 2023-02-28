@@ -195,7 +195,7 @@ public class TradeService implements TradeServiceInterface {
                             cardService.addCardToUser(trade.getCardA(), userB);
                             cardService.addCardToUser(card, userA);
                             //cardService.lockCard(trade.getCardB(), false);
-                            //cardService.lockCard(trade.getCardA(), false);
+                            cardService.lockCard(trade.getCardA(), false);
 
                             System.out.println("Cards added to users");
 
